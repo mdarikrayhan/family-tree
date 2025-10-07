@@ -24,6 +24,7 @@ interface FamilyStore {
   importMembers: (members: FamilyMember[]) => void;
   exportMembers: () => FamilyMember[];
   triggerLayoutReset: () => void; // Force layout recalculation
+  clearAllData: () => void; // Clear all data from local storage
 }
 
 const useFamilyStore = create<FamilyStore>((set, get) => ({
@@ -88,7 +89,17 @@ const useFamilyStore = create<FamilyStore>((set, get) => ({
     set((state) => ({
       layoutVersion: state.layoutVersion + 1, // Force layout recalculation
       resetTrigger: state.resetTrigger + 1 // Force position reset
-    }))
+    })),
+
+  clearAllData: () =>
+    set(() => {
+      localStorage.removeItem('familyTree');
+      return {
+        members: [],
+        layoutVersion: Date.now(), // Force layout recalculation
+        resetTrigger: Date.now() // Force reset
+      };
+    })
 }));
 
 export default useFamilyStore;

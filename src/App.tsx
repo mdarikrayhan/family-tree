@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import Toolbar from './components/Toolbar';
 import TreeView from './components/TreeView';
+import TreeControls from './components/TreeControls';
 import MemberForm from './components/MemberForm';
 import MemberCard from './components/MemberCard';
 import useFamilyStore, { type FamilyMember } from './store/useFamilyStore';
@@ -29,7 +30,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Toolbar onAddMember={handleAddMember} />
+      <Toolbar />
 
       <div className="max-w-7xl mx-auto p-6">
         {/* View Toggle */}
@@ -60,6 +61,7 @@ function App() {
         {currentView === 'tree' ? (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Family Tree</h2>
+            <TreeControls onAddMember={handleAddMember} />
             <TreeView key={resetTrigger} />
           </div>
         ) : (
