@@ -1,101 +1,53 @@
-# 🌳 Family Tree Builder
+# Family Tree Builder
 
-A modern, interactive family tree builder built with React, TypeScript, and React Flow. Create, visualize, and manage your family relationships with an intuitive interface.
+A family tree builder that runs entirely in the browser, made with React, TypeScript and React Flow in October 2025. You add people, link them as parents, children and spouses, and the app lays them out by generation. Everything is saved in the browser's `localStorage`, and the tree can be exported to and imported from a JSON file. There is no back end.
 
-## ✨ Features
+Live site: https://mdarikrayhan.github.io/family-tree/
 
-### 🔗 Smart Relationship Visualization
-- **Hierarchical Layout**: Family members are automatically arranged by generation (grandparents → parents → children)
-- **Visual Connections**: Different edge types for different relationships:
-  - **Blue solid lines**: Parent-child relationships
-  - **Pink dashed lines**: Marriage/spouse relationships (animated)
-- **Intelligent Positioning**: Spouses are positioned close together, and families are grouped logically
+## Features
 
-### 👥 Comprehensive Member Management
-- Add family members with detailed information (name, gender, birth/death dates)
-- Establish relationships: parents, children, spouses
-- **Bidirectional Relationships**: When you set someone as a spouse, the relationship is automatically reciprocated
-- **Smart Parent-Child Linking**: Adding a parent automatically adds the child to their children list
+- **Members:** add or edit a person with name, gender (male, female or other), birth date, death date, father, mother and spouse. A list view shows every member as a card with **Edit** and **Delete** buttons. Deleting a member removes every reference to them.
+- **Linked relationships:** choosing a spouse sets the link on both people. When a new member is added with a father or mother, that parent's list of children is updated too.
+- **Tree view:** an interactive [React Flow](https://reactflow.dev/) diagram with zoom, pan, a minimap and draggable nodes.
+  - Members are placed by generation. Couples sit side by side, and siblings are ordered from oldest to youngest by birth date.
+  - Parent-child links are solid blue lines that run through a junction point under each couple. Spouse links are dashed, animated pink lines.
+  - Cards are colour-coded by gender.
+- **Controls:**
+  - **Export** downloads the tree as `familyTree.json`. **Import** loads such a file and replaces the current data after asking you to confirm.
+  - **Sample Data** adds a three-generation example family.
+  - **Reset Layout** recalculates the positions.
+  - **Clear All** deletes everything from `localStorage`.
 
-### 💾 Data Persistence
-- **Local Storage**: All data is saved locally in your browser
-- **Export/Import**: Backup your family tree as JSON files
-- **No Backend Required**: Works entirely offline
+## Tech stack
 
-### 🎨 Modern UI
-- **Responsive Design**: Works on desktop and mobile
-- **Gender-coded Colors**: Visual distinction between male (blue), female (pink), and other (gray)
-- **Interactive Tree**: Zoom, pan, and explore your family tree
-- **Spouse Indicators**: See marriage connections directly on member cards
+- React 19 and TypeScript, built with Vite (with the React Compiler Babel plugin)
+- React Flow 11 for the diagram
+- Zustand for state, persisted to `localStorage`
+- Tailwind CSS 3
 
-## 🚀 Getting Started
+## Getting started
 
-### Prerequisites
-- Node.js (18+ recommended)
-- npm or yarn
+Requires Node.js and npm.
 
-### Installation
-
-1. Clone the repository:
-\`\`\`bash
-git clone https://github.com/mdarikrayhan/family-tree.git
-cd family-tree
-\`\`\`
-
-2. Install dependencies:
-\`\`\`bash
+```bash
 npm install
-\`\`\`
-
-3. Start the development server:
-\`\`\`bash
 npm run dev
-\`\`\`
+```
 
-4. Open [http://localhost:5173](http://localhost:5173) in your browser
+Vite serves the app under the `/family-tree/` base path (set in [`vite.config.ts`](vite.config.ts)), so open the URL that `npm run dev` prints.
 
-## 📱 Usage
+| Command | What it does |
+| --- | --- |
+| `npm run build` | Type-check and build into `dist/` |
+| `npm run preview` | Serve the production build |
+| `npm run lint` | Run ESLint |
+| `npm run deploy` | Build, then publish `dist/` to the `gh-pages` branch (the live site) |
 
-### Adding Family Members
-1. Click "Add Member" to open the form
-2. Fill in basic information (name, gender, dates)
-3. Select relationships (father, mother, spouse) from existing members
-4. Click "Add Member" to save
+## Data format
 
-### Building Relationships
-- **Parent-Child**: Select parents when adding a new member
-- **Spouse**: Select a spouse from the dropdown (relationship will be bidirectional)
-- **Multiple Generations**: Build up from grandparents down to grandchildren
+Each member is stored like this ([`src/store/useFamilyStore.ts`](src/store/useFamilyStore.ts)):
 
-### Visualizing the Tree
-- The tree automatically arranges members by generation
-- Use the minimap to navigate large family trees
-- Zoom in/out with mouse wheel or controls
-- Different line types show different relationship types
-
-### Data Management
-- **Export**: Click "Export Tree" to download your family data as JSON
-- **Import**: Click "Import Tree" to load previously exported data
-- **Local Persistence**: Data is automatically saved in your browser
-
-## 🏗️ Technical Architecture
-
-### Frontend Stack
-- **React 18** with TypeScript
-- **Vite** for fast development and building
-- **React Flow** for interactive tree visualization
-- **Zustand** for lightweight state management
-- **Tailwind CSS** for styling
-
-### Key Components
-- \`TreeView\`: Interactive family tree visualization
-- \`MemberForm\`: Add/edit family member details
-- \`MemberNode\`: Individual family member display
-- \`MemberCard\`: Member information cards
-- \`Toolbar\`: Import/export and tree management
-
-### Data Structure
-\`\`\`typescript
+```typescript
 interface FamilyMember {
   id: string;
   name: string;
@@ -109,74 +61,25 @@ interface FamilyMember {
     childrenIds: string[];
   };
 }
-\`\`\`
-
-## 🔮 Future Enhancements
-
-- [ ] Photo support for family members
-- [ ] Multiple spouse support (for historical trees)
-- [ ] Adoption and step-family relationships
-- [ ] Tree export as image/PDF
-- [ ] Search and filter functionality
-- [ ] Multiple family tree management
-- [ ] Cloud sync integration
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 🙏 Acknowledgments
-
-- Built with [React Flow](https://reactflow.dev/) for tree visualization
-- Styled with [Tailwind CSS](https://tailwindcss.com/)
-- State management by [Zustand](https://github.com/pmndrs/zustand)
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+An exported file is a JSON array of these objects.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Project structure
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/App.tsx                     tree/list view switch and the member form modal
+src/components/Toolbar.tsx      title, member count, import and export
+src/components/TreeControls.tsx add member, sample data, clear all, reset layout
+src/components/TreeView.tsx     React Flow canvas
+src/components/MemberNode.tsx   a person in the tree
+src/components/JunctionNode.tsx the point where a couple's line splits to their children
+src/components/MemberCard.tsx   a person in the list view
+src/components/MemberForm.tsx   add/edit form and relationship updates
+src/store/useFamilyStore.ts     Zustand store and localStorage persistence
+src/utils/helpers.ts            generation map, layout, edges, JSON import/export
+```
+
+## Author
+
+Md Arik Rayhan — [mdarikrayhan.com](https://mdarikrayhan.com)
